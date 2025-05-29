@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.lebaillyapp.sonicjammer.composable.sevenSeg.SevenSegmentDisplayExtended
 import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
+import com.lebaillyapp.sonicjammer.config.reflectConfig
 
 @Composable
 fun DynamikRowAfficheur(
@@ -27,14 +28,8 @@ fun DynamikRowAfficheur(
     extraSpacingStep: Int = 0, // tous les N afficheurs (0 = désactivé)
     extraSpacing: Dp = 0.dp,
     activateReflect: Boolean = false,
-    reflectAlpha: Float = 0.2f,
-    reflectSpacing: Dp = 0.dp,
-    reflectAngle: Float = 245f,
-    reflectGlowRadius: Float = 20f,
-    reflectCameraAdjustment: Float = 6f
+    reflectConfig: reflectConfig
 ) {
-
-
     Column(modifier = modifier) {
         //Affichage des chiffres
         Row(
@@ -100,12 +95,12 @@ fun DynamikRowAfficheur(
 
         //REFLEXION
         if (activateReflect) {
-            Spacer(modifier = Modifier.height(reflectSpacing))
+            Spacer(modifier = Modifier.height(reflectConfig.reflectSpacing))
             Row(
-                modifier = modifier.alpha(reflectAlpha).graphicsLayer {
+                modifier = modifier.alpha(reflectConfig.reflectAlpha).graphicsLayer {
                     rotationY = 0f
-                    rotationX = reflectAngle
-                    cameraDistance = reflectCameraAdjustment * density
+                    rotationX = reflectConfig.reflectAngle
+                    cameraDistance = reflectConfig.reflectCameraAdjustment * density
                 }.align(Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -158,7 +153,7 @@ fun DynamikRowAfficheur(
                         onColor = config.onColor,
                         offColor = config.offColor,
                         alpha = config.alpha,
-                        glowRadius = reflectGlowRadius,
+                        glowRadius = reflectConfig.reflectGlowRadius,
                         flickerAmplitude = config.flickerAmplitude,
                         flickerFrequency = config.flickerFrequency,
                         idleMode = config.idleMode,
@@ -171,9 +166,4 @@ fun DynamikRowAfficheur(
 
 
     }
-
-
-
-
-
 }
