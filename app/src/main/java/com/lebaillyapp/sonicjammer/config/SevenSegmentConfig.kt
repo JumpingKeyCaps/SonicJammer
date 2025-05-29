@@ -20,4 +20,5 @@ data class SevenSegmentConfig(
     val flickerFrequency: Float = 1f,
     val idleMode: Boolean = false,
     val idleSpeed: Long = 100
+
 )
