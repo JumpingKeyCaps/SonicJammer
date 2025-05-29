@@ -152,6 +152,8 @@ fun SevenSegmentDisplayExtended(
                 spinspin = (spinspin + 1) % idleSegAnim.size
                 segments = idleSegAnim[spinspin]
             }
+        }else{
+            segments = null
         }
     }
 
