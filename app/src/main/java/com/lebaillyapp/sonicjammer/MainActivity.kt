@@ -11,8 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
+import com.lebaillyapp.sonicjammer.screen.DemoFive
 import com.lebaillyapp.sonicjammer.screen.DemoFour
 import com.lebaillyapp.sonicjammer.screen.DemoOne
+import com.lebaillyapp.sonicjammer.screen.DemoSix
 import com.lebaillyapp.sonicjammer.screen.DemoThree
 import com.lebaillyapp.sonicjammer.screen.DemoTwo
 import com.lebaillyapp.sonicjammer.ui.theme.SonicJammerTheme
@@ -34,7 +36,9 @@ class MainActivity : ComponentActivity() {
                  //   DemoTwo()
                    // DemoThree()
 
-                    DemoFour()
+                   // DemoFour()
+                    //DemoFive()
+                    DemoSix()
 
 
                  }
