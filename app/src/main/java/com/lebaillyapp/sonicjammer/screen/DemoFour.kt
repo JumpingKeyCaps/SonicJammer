@@ -44,6 +44,7 @@ import com.lebaillyapp.sonicjammer.composable.knob.RRKnob
 import com.lebaillyapp.sonicjammer.composable.knob.RRKnobV2
 import com.lebaillyapp.sonicjammer.composable.knob.RealisticRotaryKnobBlacked
 import com.lebaillyapp.sonicjammer.composable.led.RealisticLED
+import com.lebaillyapp.sonicjammer.composable.visualizer.WaveformVisualizer
 import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
 import com.lebaillyapp.sonicjammer.config.reflectConfig
 import kotlinx.coroutines.delay
@@ -77,7 +78,14 @@ fun DemoFour(){
     )
     //general mutual config
     val configlist = listOf(
-        SevenSegmentConfig(offColor = Color(0xFF2A1313),segmentLength = 17.5.dp,segmentHorizontalLength = 17.5.dp, segmentThickness = 4.5.dp,bevel = 2.dp,glowRadius = 35f, onColor = Color(
+        SevenSegmentConfig(
+            offColor = Color(0xFF2A1313),
+            segmentLength = 17.5.dp,
+            segmentHorizontalLength = 17.5.dp,
+            segmentThickness = 4.5.dp,
+            bevel = 2.dp,
+            glowRadius = 35f,
+            onColor = Color(
             0xFF1DE9B6
         )
         ),
@@ -123,7 +131,12 @@ fun DemoFour(){
             activateReflect = true,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+
+
+
+
+
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             RealisticRotaryKnobBlacked(
@@ -146,11 +159,11 @@ fun DemoFour(){
             )
 
         }
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             RealisticLED(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                size = 30f,
+                size = 25f,
                 isOn = true,
                 color = Color(0xFF1DE9B6),
                 blinkInterval = 1000,
@@ -159,10 +172,10 @@ fun DemoFour(){
             Spacer(modifier = Modifier.width(10.dp))
             RealisticLED(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                size = 30f,
+                size = 25f,
                 isOn = true,
-                color = Color(0xFFFF1744),
-                blinkInterval = 1000,
+                color = Color(0xFFFFFFFF),
+                blinkInterval = 100,
                 haloSpacer = 3
             )
         }
