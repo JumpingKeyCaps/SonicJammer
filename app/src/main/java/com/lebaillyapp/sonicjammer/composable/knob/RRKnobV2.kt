@@ -58,10 +58,11 @@ fun RRKnobV2(
     backgroundColor: Color = Color(0xFF1A1A1A),
     backgroundShadowColor: Color = Color.Black.copy(alpha = 0.6f)
 ) {
+    val initialRotationOffset = -90f
     val haptics = LocalHapticFeedback.current
     val sizePx = with(LocalDensity.current) { size.toPx() }
 
-    var rotationAngle by remember { mutableStateOf(0f) }
+    var rotationAngle by remember { mutableStateOf(initialRotationOffset) }
     var currentStep by remember { mutableStateOf(0) }
     var lastTouchAngle by remember { mutableStateOf<Float?>(null) }
     var isDragging by remember { mutableStateOf(false) }
@@ -97,7 +98,10 @@ fun RRKnobV2(
                             rotationAngle = (rotationAngle + delta) % 360f
                             if (rotationAngle < 0) rotationAngle += 360f
 
-                            val newStep = ((rotationAngle / 360f) * steps).roundToInt() % steps
+                            // Normaliser rotationAngle pour prendre en compte le décalage visuel
+                            val normalizedAngle = (rotationAngle - initialRotationOffset + 360f) % 360f
+
+                            val newStep = ((normalizedAngle / 360f) * steps).roundToInt() % steps
                             if (newStep != currentStep) {
                                 currentStep = newStep
                                 onValueChanged(currentStep)
@@ -110,12 +114,16 @@ fun RRKnobV2(
                         isDragging = false
                         lastTouchAngle = null
 
-                        // Calculer l'angle de la graduation la plus proche
                         val stepAngle = 360f / steps
-                        val targetStep = ((rotationAngle / stepAngle) + 0.5f).toInt() % steps
-                        val targetAngle = (targetStep * stepAngle) % 360f
 
-                        // Gérer le cas où on traverse 0°/360°
+                        // Normaliser rotationAngle pour calculer targetStep
+                        val normalizedAngle = (rotationAngle - initialRotationOffset + 360f) % 360f
+
+                        val targetStep = ((normalizedAngle / stepAngle) + 0.5f).toInt() % steps
+
+                        // Recalculer l'angle cible en réinjectant le décalage
+                        val targetAngle = (targetStep * stepAngle + initialRotationOffset) % 360f
+
                         val angleDiff = targetAngle - rotationAngle
                         val adjustedTargetAngle = when {
                             angleDiff > 180f -> targetAngle - 360f
@@ -125,7 +133,6 @@ fun RRKnobV2(
 
                         rotationAngle = adjustedTargetAngle
 
-                        // Mettre à jour le step si nécessaire
                         if (targetStep != currentStep) {
                             currentStep = targetStep
                             onValueChanged(currentStep)
@@ -209,7 +216,7 @@ fun RRKnobV2(
             // === GRADUATION AVEC COULEURS CONFIGURABLES ===
             val tickCount = steps
             repeat(tickCount) { i ->
-                val angle = Math.toRadians(i * 360f / tickCount.toDouble())
+                val angle = Math.toRadians(i * 360f / tickCount.toDouble() + initialRotationOffset)
                 val start = Offset(
                     x = center.x + (bevelRadius + tickSpacingPx) * cos(angle).toFloat(),
                     y = center.y + (bevelRadius + tickSpacingPx) * sin(angle).toFloat()
