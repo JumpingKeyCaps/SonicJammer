@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.fourteenSeg
+package com.lebaillyapp.sonicjammer.oldStuff.composable.fourteenSeg
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.animation.core.RepeatMode
@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.config.FourteenSegmentConfig
+import com.lebaillyapp.sonicjammer.oldStuff.config.FourteenSegmentConfig
 import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.cos
