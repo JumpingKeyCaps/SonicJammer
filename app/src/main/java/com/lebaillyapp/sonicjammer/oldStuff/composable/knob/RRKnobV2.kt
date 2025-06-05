@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.knob
+package com.lebaillyapp.sonicjammer.oldStuff.composable.knob
 
 import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.animateFloatAsState

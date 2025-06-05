@@ -1,5 +1,8 @@
-package com.lebaillyapp.sonicjammer.composable.knob
+package com.lebaillyapp.sonicjammer.oldStuff.composable.knob
 
+import androidx.compose.animation.core.EaseOutCubic
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
@@ -26,7 +29,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Composable
-fun RealisticRotaryKnobBlacked(
+fun RRKnob(
     modifier: Modifier = Modifier,
     size: Dp = 160.dp,
     steps: Int = 30,
@@ -38,6 +41,17 @@ fun RealisticRotaryKnobBlacked(
     var rotationAngle by remember { mutableStateOf(0f) }
     var currentStep by remember { mutableStateOf(0) }
     var lastTouchAngle by remember { mutableStateOf<Float?>(null) }
+    var isDragging by remember { mutableStateOf(false) }
+
+    // Animation pour le snap
+    val animatedRotation by animateFloatAsState(
+        targetValue = rotationAngle,
+        animationSpec = tween(
+            durationMillis = if (isDragging) 0 else 200,
+            easing = EaseOutCubic
+        ),
+        label = "rotation_animation"
+    )
 
     Box(
         modifier = modifier
@@ -45,6 +59,7 @@ fun RealisticRotaryKnobBlacked(
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = { offset ->
+                        isDragging = true
                         val center = Offset(sizePx / 2, sizePx / 2)
                         lastTouchAngle = angleBetween(center, offset)
                     },
@@ -68,7 +83,31 @@ fun RealisticRotaryKnobBlacked(
                             lastTouchAngle = newAngle
                         }
                     },
-                    onDragEnd = { lastTouchAngle = null }
+                    onDragEnd = {
+                        isDragging = false
+                        lastTouchAngle = null
+
+                        // Calculer l'angle de la graduation la plus proche
+                        val stepAngle = 360f / steps
+                        val targetStep = ((rotationAngle / stepAngle) + 0.5f).toInt() % steps
+                        val targetAngle = (targetStep * stepAngle) % 360f
+
+                        // Gérer le cas où on traverse 0°/360°
+                        val angleDiff = targetAngle - rotationAngle
+                        val adjustedTargetAngle = when {
+                            angleDiff > 180f -> targetAngle - 360f
+                            angleDiff < -180f -> targetAngle + 360f
+                            else -> targetAngle
+                        }
+
+                        rotationAngle = adjustedTargetAngle
+
+                        // Mettre à jour le step si nécessaire
+                        if (targetStep != currentStep) {
+                            currentStep = targetStep
+                            onValueChanged(currentStep)
+                        }
+                    }
                 )
             }
     ) {
@@ -110,8 +149,8 @@ fun RealisticRotaryKnobBlacked(
                 )
             }
 
-            // Bevel (effet de lumière tournant)
-            val angleRad = Math.toRadians(rotationAngle.toDouble())
+            // Bevel (effet de lumière tournant) - utilise l'angle animé
+            val angleRad = Math.toRadians(animatedRotation.toDouble())
             val lightDirection = Offset(
                 x = center.x + bevelRadius * cos(angleRad).toFloat(),
                 y = center.y + bevelRadius * sin(angleRad).toFloat()
@@ -142,9 +181,8 @@ fun RealisticRotaryKnobBlacked(
                 center = center
             )
 
-
-            // Reflet principal qui tourne avec le knob
-            val reflectionAngle = Math.toRadians(rotationAngle.toDouble() - 45)
+            // Reflet principal qui tourne avec le knob - utilise l'angle animé
+            val reflectionAngle = Math.toRadians(animatedRotation.toDouble() - 45)
             val reflectionCenter = Offset(
                 center.x - knobRadius * 0.4f * cos(reflectionAngle).toFloat(),
                 center.y - knobRadius * 0.4f * sin(reflectionAngle).toFloat()
@@ -165,12 +203,8 @@ fun RealisticRotaryKnobBlacked(
                 center = center
             )
 
-
-
-
-
-            // Curseur : petit trait orange stylé dans le bevel - MAINTENANT ALIGNÉ
-            val indicatorAngle = Math.toRadians(rotationAngle.toDouble()) // Suppression du -90
+            // Curseur : petit trait orange stylé dans le bevel - utilise l'angle animé
+            val indicatorAngle = Math.toRadians(animatedRotation.toDouble())
             val bevelMidRadius = (bevelRadius + knobRadius) / 2f
             val startOffset = Offset(
                 center.x + bevelMidRadius * cos(indicatorAngle).toFloat(),
@@ -194,7 +228,6 @@ fun RealisticRotaryKnobBlacked(
         }
     }
 }
-
 
 private fun angleBetween(center: Offset, touch: Offset): Float {
     val dx = touch.x - center.x

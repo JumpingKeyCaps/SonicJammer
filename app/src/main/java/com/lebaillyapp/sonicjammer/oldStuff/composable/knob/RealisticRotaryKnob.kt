@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.knob
+package com.lebaillyapp.sonicjammer.oldStuff.composable.knob
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
