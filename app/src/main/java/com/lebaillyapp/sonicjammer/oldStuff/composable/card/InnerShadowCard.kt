@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.card
+package com.lebaillyapp.sonicjammer.oldStuff.composable.card
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.background

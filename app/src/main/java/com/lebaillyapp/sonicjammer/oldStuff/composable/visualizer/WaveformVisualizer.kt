@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.visualizer
+package com.lebaillyapp.sonicjammer.oldStuff.composable.visualizer
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize

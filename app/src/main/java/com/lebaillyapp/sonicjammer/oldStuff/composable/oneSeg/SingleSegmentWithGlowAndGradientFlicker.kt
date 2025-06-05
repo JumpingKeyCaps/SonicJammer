@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.oneSeg
+package com.lebaillyapp.sonicjammer.oldStuff.composable.oneSeg
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.animation.core.LinearEasing

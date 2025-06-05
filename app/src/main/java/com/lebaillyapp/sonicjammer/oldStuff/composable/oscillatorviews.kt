@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable
+package com.lebaillyapp.sonicjammer.oldStuff.composable
 
 import androidx.compose.ui.graphics.drawscope.Stroke
 
