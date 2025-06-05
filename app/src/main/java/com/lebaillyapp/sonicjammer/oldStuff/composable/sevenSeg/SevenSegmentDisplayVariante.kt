@@ -1,6 +1,6 @@
-package com.lebaillyapp.sonicjammer.composable.sevenSeg
+package com.lebaillyapp.sonicjammer.oldStuff.composable.sevenSeg
 
-import android.graphics.BlurMaskFilter
+
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -9,28 +9,20 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 import kotlin.math.sin
 
-
 @Composable
-fun SevenSegmentDisplayExtended(
+fun SevenSegmentDisplayVariante(
+    digit: Int,
     modifier: Modifier = Modifier,
-    digit: Int? = null,
-    char: Char? = null,
-    manualSegments: List<Boolean>? = null,
     segmentLength: Dp = 80.dp,
     segmentHorizontalLength: Dp = 80.dp,
     segmentThickness: Dp = 20.dp,
@@ -38,36 +30,43 @@ fun SevenSegmentDisplayExtended(
     onColor: Color = Color.Red,
     offColor: Color = Color.DarkGray,
     alpha: Float = 1f,
-    glowRadius: Float = 15f,
+    glowRadius: Float = 15f, // en pixels pour RenderEffect
     flickerAmplitude: Float = 0.1f,
-    flickerFrequency: Float = 3f,
-    idleMode: Boolean = false,
-    idleSpeed: Long = 100
+    flickerFrequency: Float = 3f // en Hz
 ) {
     val density = LocalDensity.current
     val segLenPx = with(density) { segmentLength.toPx() }
+
     val segHorLenPx = with(density) { segmentHorizontalLength.toPx() }
+
     val segThkPx = with(density) { segmentThickness.toPx() }
     val bevelPx = with(density) { bevel.toPx() }
 
-    var segments by remember { mutableStateOf(manualSegments) }
-
+    // Animation time en secondes
     val infiniteTransition = rememberInfiniteTransition()
     val time by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(1000), RepeatMode.Restart)
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000),
+            repeatMode = RepeatMode.Restart
+        )
     )
 
+    // Flicker random calculé via sinusoïde + variation aléatoire stable
+    // Je mixe sin(time) avec un noise random fixe (seedé)
     val flickerAlpha = remember {
-        List(7) { kotlin.random.Random(it).nextFloat() * 0.5f + 0.5f }
+        List(7) { kotlin.random.Random(it).nextFloat() * 0.5f + 0.5f } // base noise [0.5..1]
     }
 
     fun flicker(index: Int): Double {
         val base = flickerAlpha.getOrNull(index) ?: 1f
-        return alpha * (base + flickerAmplitude * kotlin.math.sin(2 * Math.PI * flickerFrequency * time + index))
+        // oscillation sinusoïdale + base bruit
+        return alpha * (base + flickerAmplitude * sin(2 * Math.PI * flickerFrequency * time + index))
             .coerceIn(0.0, 1.0)
     }
+
+    // Paths identiques au précédent, pas d’astuce ici pour biseaux nets
 
     fun segmentHorizontal(x: Float, y: Float): Path = Path().apply {
         moveTo(x + bevelPx, y)
@@ -93,6 +92,7 @@ fun SevenSegmentDisplayExtended(
         close()
     }
 
+    // Positions des segments
     val A = Offset(segThkPx, 0f)
     val B = Offset(segHorLenPx + segThkPx, segThkPx)
     val C = Offset(segHorLenPx + segThkPx, segLenPx + 2 * segThkPx)
@@ -101,7 +101,7 @@ fun SevenSegmentDisplayExtended(
     val F = Offset(0f, segThkPx)
     val G = Offset(segThkPx, segLenPx + segThkPx)
 
-    val digitSegmentMap = mapOf(
+    val digitMap = mapOf(
         0 to listOf(true, true, true, true, true, true, false),
         1 to listOf(false, true, true, false, false, false, false),
         2 to listOf(true, true, false, true, true, false, true),
@@ -113,68 +113,32 @@ fun SevenSegmentDisplayExtended(
         8 to listOf(true, true, true, true, true, true, true),
         9 to listOf(true, true, true, true, false, true, true)
     )
-
-    val charSegmentMap = mapOf(
-        'A' to listOf(true, true, true, false, true, true, true),
-        'B' to listOf(false, false, true, true, true, true, true),
-        'C' to listOf(true, false, false, true, true, true, false),
-        'D' to listOf(false, true, true, true, true, false, true),
-        'E' to listOf(true, false, false, true, true, true, true),
-        'F' to listOf(true, false, false, false, true, true, true),
-        'H' to listOf(false, true, true, false, true, true, true),
-        'L' to listOf(false, false, false, true, true, true, false),
-        'P' to listOf(true, true, false, false, true, true, true),
-        'U' to listOf(false, true, true, true, true, true, false)
-    )
-
-    val states = segments ?: run {
-        when {
-            digit != null -> digitSegmentMap[digit]
-            char != null -> charSegmentMap[char.uppercaseChar()]
-            else -> null
-        }
-    } ?: List(7) { false }
+    val states = digitMap[digit] ?: List(7) { false }
 
     val widthPx = segHorLenPx + 2 * segThkPx
     val heightPx = 2 * segLenPx + 3 * segThkPx
 
-    // Idle mode animation states
-    val idle1 by remember { mutableStateOf(listOf(true, false, false, true, false, false, false)) }
-    val idle2 by remember { mutableStateOf(listOf(false, true, false, false, true, false, false)) }
-    val idle3 by remember { mutableStateOf(listOf(false, false, true, false, false, true, false)) }
-    var spinspin by remember { mutableIntStateOf(0) }
-    val idleSegAnim by remember { mutableStateOf(listOf(idle1, idle2, idle3)) }
-
-    LaunchedEffect(idleMode) {
-        if (idleMode) {
-            while (true) {
-                delay(idleSpeed)
-                spinspin = (spinspin + 1) % idleSegAnim.size
-                segments = idleSegAnim[spinspin]
-            }
-        }else{
-            segments = null
-        }
-    }
-
     Canvas(modifier = modifier.size(with(density) { widthPx.toDp() }, with(density) { heightPx.toDp() })) {
+        // Glow effect RenderEffect : simple blur autour du segment
         val paintGlow = Paint().apply {
             this.color = onColor
-            this.alpha = 255f
-            this.asFrameworkPaint().maskFilter = BlurMaskFilter(glowRadius, BlurMaskFilter.Blur.NORMAL)
+            this.alpha = 255F
+            this.asFrameworkPaint().setMaskFilter(android.graphics.BlurMaskFilter(glowRadius, android.graphics.BlurMaskFilter.Blur.NORMAL))
         }
 
-        fun drawSegment(path: Path, isOn: Boolean, index: Int, alphaOverride: Float = alpha) {
-            val flick = flicker(index) * alphaOverride
+        fun drawSegment(path: Path, isOn: Boolean, index: Int) {
+            val flick = flicker(index)
             if (isOn) {
+                // Glow + couleur allumée avec flicker alpha
                 drawPath(path, onColor.copy(alpha = flick.toFloat()))
+                // Overlay glow (dessiner 2 fois en blur ?)
                 drawContext.canvas.drawPath(path, paintGlow)
             } else {
-                drawPath(path, offColor.copy(alpha = alphaOverride * 0.6f))
+                // segment éteint avec alpha global
+                drawPath(path, offColor.copy(alpha = alpha * 0.6f))
             }
         }
 
-        // Dessin des segments
         drawSegment(segmentHorizontal(A.x, A.y), states[0], 0)
         drawSegment(segmentVertical(B.x, B.y), states[1], 1)
         drawSegment(segmentVertical(C.x, C.y), states[2], 2)
@@ -184,3 +148,4 @@ fun SevenSegmentDisplayExtended(
         drawSegment(segmentHorizontal(G.x, G.y), states[6], 6)
     }
 }
+

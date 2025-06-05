@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.sevenSeg
+package com.lebaillyapp.sonicjammer.oldStuff.composable.sevenSeg
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

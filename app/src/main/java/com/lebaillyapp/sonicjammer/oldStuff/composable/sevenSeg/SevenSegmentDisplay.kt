@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.sevenSeg
+package com.lebaillyapp.sonicjammer.oldStuff.composable.sevenSeg
 
 
 import androidx.compose.animation.core.RepeatMode
@@ -20,11 +20,10 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.sin
 
 @Composable
-fun SevenSegmentDisplayVariante(
+fun SevenSegmentDisplay(
     digit: Int,
     modifier: Modifier = Modifier,
     segmentLength: Dp = 80.dp,
-    segmentHorizontalLength: Dp = 80.dp,
     segmentThickness: Dp = 20.dp,
     bevel: Dp = 6.dp,
     onColor: Color = Color.Red,
@@ -36,9 +35,6 @@ fun SevenSegmentDisplayVariante(
 ) {
     val density = LocalDensity.current
     val segLenPx = with(density) { segmentLength.toPx() }
-
-    val segHorLenPx = with(density) { segmentHorizontalLength.toPx() }
-
     val segThkPx = with(density) { segmentThickness.toPx() }
     val bevelPx = with(density) { bevel.toPx() }
 
@@ -67,13 +63,12 @@ fun SevenSegmentDisplayVariante(
     }
 
     // Paths identiques au précédent, pas d’astuce ici pour biseaux nets
-
     fun segmentHorizontal(x: Float, y: Float): Path = Path().apply {
         moveTo(x + bevelPx, y)
-        lineTo(x + segHorLenPx - bevelPx, y)
-        lineTo(x + segHorLenPx, y + bevelPx)
-        lineTo(x + segHorLenPx, y + segThkPx - bevelPx)
-        lineTo(x + segHorLenPx - bevelPx, y + segThkPx)
+        lineTo(x + segLenPx - bevelPx, y)
+        lineTo(x + segLenPx, y + bevelPx)
+        lineTo(x + segLenPx, y + segThkPx - bevelPx)
+        lineTo(x + segLenPx - bevelPx, y + segThkPx)
         lineTo(x + bevelPx, y + segThkPx)
         lineTo(x, y + segThkPx - bevelPx)
         lineTo(x, y + bevelPx)
@@ -94,8 +89,8 @@ fun SevenSegmentDisplayVariante(
 
     // Positions des segments
     val A = Offset(segThkPx, 0f)
-    val B = Offset(segHorLenPx + segThkPx, segThkPx)
-    val C = Offset(segHorLenPx + segThkPx, segLenPx + 2 * segThkPx)
+    val B = Offset(segLenPx + segThkPx, segThkPx)
+    val C = Offset(segLenPx + segThkPx, segLenPx + 2 * segThkPx)
     val D = Offset(segThkPx, 2 * segLenPx + 2 * segThkPx)
     val E = Offset(0f, segLenPx + 2 * segThkPx)
     val F = Offset(0f, segThkPx)
@@ -115,7 +110,7 @@ fun SevenSegmentDisplayVariante(
     )
     val states = digitMap[digit] ?: List(7) { false }
 
-    val widthPx = segHorLenPx + 2 * segThkPx
+    val widthPx = segLenPx + 2 * segThkPx
     val heightPx = 2 * segLenPx + 3 * segThkPx
 
     Canvas(modifier = modifier.size(with(density) { widthPx.toDp() }, with(density) { heightPx.toDp() })) {
@@ -125,7 +120,6 @@ fun SevenSegmentDisplayVariante(
             this.alpha = 255F
             this.asFrameworkPaint().setMaskFilter(android.graphics.BlurMaskFilter(glowRadius, android.graphics.BlurMaskFilter.Blur.NORMAL))
         }
-        val paintNormal = Paint()
 
         fun drawSegment(path: Path, isOn: Boolean, index: Int) {
             val flick = flicker(index)
