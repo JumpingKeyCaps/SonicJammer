@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.data
+package com.lebaillyapp.sonicjammer.data.service
 
 import com.lebaillyapp.sonicjammer.model.JamConfig
 import kotlinx.coroutines.flow.Flow
