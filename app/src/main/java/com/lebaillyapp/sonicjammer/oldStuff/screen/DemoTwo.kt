@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.screen
+package com.lebaillyapp.sonicjammer.oldStuff.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -21,10 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.composable.afficheurs.DynamikRowAfficheur
-import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
-import com.lebaillyapp.sonicjammer.config.reflectConfig
-import com.lebaillyapp.sonicjammer.iteratorConfigGenerator
+import com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs.DynamikRowAfficheur
+import com.lebaillyapp.sonicjammer.oldStuff.config.SevenSegmentConfig
+import com.lebaillyapp.sonicjammer.oldStuff.config.reflectConfig
+import com.lebaillyapp.sonicjammer.oldStuff.iteratorConfigGenerator
 import kotlinx.coroutines.delay
 
 @Composable

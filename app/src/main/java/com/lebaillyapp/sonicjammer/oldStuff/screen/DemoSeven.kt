@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.screen
+package com.lebaillyapp.sonicjammer.oldStuff.screen
 
 import android.graphics.BlurMaskFilter
 import android.util.Log
@@ -39,13 +39,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.composable.afficheurs.DynamikRowAfficheur
-import com.lebaillyapp.sonicjammer.composable.card.InnerShadowCard
-import com.lebaillyapp.sonicjammer.composable.knob.RRKnobV2
-import com.lebaillyapp.sonicjammer.composable.knob.RRKnobV2Limited
-import com.lebaillyapp.sonicjammer.composable.led.LedBarGraph
-import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
-import com.lebaillyapp.sonicjammer.config.reflectConfig
+import com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs.DynamikRowAfficheur
+import com.lebaillyapp.sonicjammer.oldStuff.composable.card.InnerShadowCard
+import com.lebaillyapp.sonicjammer.oldStuff.composable.knob.RRKnobV2Limited
+import com.lebaillyapp.sonicjammer.oldStuff.composable.led.LedBarGraph
+import com.lebaillyapp.sonicjammer.oldStuff.config.SevenSegmentConfig
+import com.lebaillyapp.sonicjammer.oldStuff.config.reflectConfig
+
 import kotlin.math.roundToInt
 
 @Composable

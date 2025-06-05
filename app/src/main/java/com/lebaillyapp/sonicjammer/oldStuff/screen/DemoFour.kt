@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.screen
+package com.lebaillyapp.sonicjammer.oldStuff.screen
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
@@ -39,14 +39,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.composable.afficheurs.DynamikRowAfficheur
-import com.lebaillyapp.sonicjammer.composable.knob.RRKnob
-import com.lebaillyapp.sonicjammer.composable.knob.RRKnobV2
-import com.lebaillyapp.sonicjammer.composable.knob.RealisticRotaryKnobBlacked
-import com.lebaillyapp.sonicjammer.composable.led.RealisticLED
-import com.lebaillyapp.sonicjammer.composable.visualizer.WaveformVisualizer
-import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
-import com.lebaillyapp.sonicjammer.config.reflectConfig
+import com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs.DynamikRowAfficheur
+import com.lebaillyapp.sonicjammer.oldStuff.composable.knob.RRKnobV2
+import com.lebaillyapp.sonicjammer.oldStuff.composable.knob.RealisticRotaryKnobBlacked
+import com.lebaillyapp.sonicjammer.oldStuff.composable.led.RealisticLED
+import com.lebaillyapp.sonicjammer.oldStuff.config.SevenSegmentConfig
+import com.lebaillyapp.sonicjammer.oldStuff.config.reflectConfig
 import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.atan2

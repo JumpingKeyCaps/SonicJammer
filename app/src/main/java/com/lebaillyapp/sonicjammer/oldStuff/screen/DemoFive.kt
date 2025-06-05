@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.screen
+package com.lebaillyapp.sonicjammer.oldStuff.screen
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -27,7 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.composable.visualizer.WaveformVisualizer
+import com.lebaillyapp.sonicjammer.oldStuff.composable.visualizer.WaveformVisualizer
 
 @Composable
 fun DemoFive() {

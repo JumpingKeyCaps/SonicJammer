@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.screen
+package com.lebaillyapp.sonicjammer.oldStuff.screen
 
 import android.util.Log
 import androidx.compose.foundation.border
@@ -28,16 +28,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lebaillyapp.sonicjammer.composable.FractalDisplay
-import com.lebaillyapp.sonicjammer.composable.LissajousStyle
+import com.lebaillyapp.sonicjammer.oldStuff.composable.FractalDisplay
+import com.lebaillyapp.sonicjammer.oldStuff.composable.LissajousStyle
+import com.lebaillyapp.sonicjammer.oldStuff.composable.SimpleNeonOscilloscope
+import com.lebaillyapp.sonicjammer.oldStuff.composable.SimpleOscilloscopeConfig
+import com.lebaillyapp.sonicjammer.oldStuff.composable.knob.RRKnobV2
 
-import com.lebaillyapp.sonicjammer.composable.SimpleNeonOscilloscope
-import com.lebaillyapp.sonicjammer.composable.SimpleOscilloscopeConfig
-import com.lebaillyapp.sonicjammer.composable.afficheurs.DynamikRowAfficheur
-import com.lebaillyapp.sonicjammer.composable.card.InnerShadowCard
-import com.lebaillyapp.sonicjammer.composable.knob.RRKnobV2
-import com.lebaillyapp.sonicjammer.composable.knob.RRKnobV2Limited
-import com.lebaillyapp.sonicjammer.composable.led.LedBarGraph
 import kotlin.math.PI
 import kotlin.math.roundToInt
 

@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.screen
+package com.lebaillyapp.sonicjammer.oldStuff.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,13 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.composable.afficheurs.DynamikRowAfficheur
-import com.lebaillyapp.sonicjammer.composable.fourteenSeg.FourteenSegmentDisplayExtended
-import com.lebaillyapp.sonicjammer.composable.led.LedBarGraph
-import com.lebaillyapp.sonicjammer.composable.visualizer.WaveformVisualizer
-import com.lebaillyapp.sonicjammer.config.FourteenSegmentConfig
-import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
-import com.lebaillyapp.sonicjammer.config.reflectConfig
+import com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs.DynamikRowAfficheur
+import com.lebaillyapp.sonicjammer.oldStuff.composable.fourteenSeg.FourteenSegmentDisplayExtended
+import com.lebaillyapp.sonicjammer.oldStuff.composable.led.LedBarGraph
+import com.lebaillyapp.sonicjammer.oldStuff.composable.visualizer.WaveformVisualizer
+import com.lebaillyapp.sonicjammer.oldStuff.config.FourteenSegmentConfig
+import com.lebaillyapp.sonicjammer.oldStuff.config.SevenSegmentConfig
+import com.lebaillyapp.sonicjammer.oldStuff.config.reflectConfig
+
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
