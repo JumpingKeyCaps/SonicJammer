@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable
+package com.lebaillyapp.sonicjammer.oldStuff.composable
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat

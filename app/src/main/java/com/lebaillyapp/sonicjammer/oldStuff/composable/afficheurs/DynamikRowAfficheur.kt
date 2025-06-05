@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.afficheurs
+package com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,9 +13,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.composable.sevenSeg.SevenSegmentDisplayExtended
-import com.lebaillyapp.sonicjammer.config.SevenSegmentConfig
-import com.lebaillyapp.sonicjammer.config.reflectConfig
+import com.lebaillyapp.sonicjammer.oldStuff.composable.sevenSeg.SevenSegmentDisplayExtended
+
+import com.lebaillyapp.sonicjammer.oldStuff.config.SevenSegmentConfig
+import com.lebaillyapp.sonicjammer.oldStuff.config.reflectConfig
 
 @Composable
 fun DynamikRowAfficheur(

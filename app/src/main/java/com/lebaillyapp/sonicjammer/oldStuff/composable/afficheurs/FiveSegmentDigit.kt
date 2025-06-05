@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.afficheurs
+package com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lebaillyapp.sonicjammer.composable.sevenSeg.SevenSegmentDisplayVariante
+import com.lebaillyapp.sonicjammer.oldStuff.composable.sevenSeg.SevenSegmentDisplayVariante
 
 @Composable
 fun FiveDigitDisplay(

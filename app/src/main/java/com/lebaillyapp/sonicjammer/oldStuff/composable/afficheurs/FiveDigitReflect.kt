@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.afficheurs
+package com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

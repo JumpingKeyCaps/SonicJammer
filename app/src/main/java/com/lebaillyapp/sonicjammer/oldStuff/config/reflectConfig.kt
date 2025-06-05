@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.config
+package com.lebaillyapp.sonicjammer.oldStuff.config
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
