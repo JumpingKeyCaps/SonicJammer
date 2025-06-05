@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.led
+package com.lebaillyapp.sonicjammer.oldStuff.composable.led
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.Box

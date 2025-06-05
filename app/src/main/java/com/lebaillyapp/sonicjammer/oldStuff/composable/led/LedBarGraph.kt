@@ -1,4 +1,4 @@
-package com.lebaillyapp.sonicjammer.composable.led
+package com.lebaillyapp.sonicjammer.oldStuff.composable.led
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.animation.core.RepeatMode
