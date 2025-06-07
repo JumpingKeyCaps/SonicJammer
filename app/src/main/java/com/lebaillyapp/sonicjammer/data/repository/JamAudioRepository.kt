@@ -1,5 +1,6 @@
 package com.lebaillyapp.sonicjammer.data.repository
 
+import androidx.compose.runtime.Stable
 import com.lebaillyapp.sonicjammer.data.service.UltrasonicAudioService
 import com.lebaillyapp.sonicjammer.model.JamConfig
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
  *
  * @property audioService Instance de [UltrasonicAudioService] utilisée pour générer le signal.
  */
+@Stable  //evite recompo inutile si lier a une UI
 class JamAudioRepository(
     private val audioService: UltrasonicAudioService
 ) {
