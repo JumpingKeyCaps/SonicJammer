@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.lebaillyapp.sonicjammer.screen.JammerUIButtonPreview
 
 import com.lebaillyapp.sonicjammer.ui.theme.SonicJammerTheme
 
@@ -24,11 +25,14 @@ class MainActivity : ComponentActivity() {
                     Modifier
                         .fillMaxSize()
                         .background(Color.Black),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.TopCenter
                 ) {
 
-                    Text("Hello World!")
+                    //test version
+                    JammerUIButtonPreview()
 
+
+                 //   JammerUIScreen()  // real version
                  }
             }
         }
