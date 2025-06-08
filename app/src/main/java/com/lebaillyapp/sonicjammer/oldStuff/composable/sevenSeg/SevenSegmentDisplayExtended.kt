@@ -123,7 +123,16 @@ fun SevenSegmentDisplayExtended(
         'H' to listOf(false, true, true, false, true, true, true),
         'L' to listOf(false, false, false, true, true, true, false),
         'P' to listOf(true, true, false, false, true, true, true),
-        'U' to listOf(false, true, true, true, true, true, false)
+        'U' to listOf(false, false, true, true, true, false, false),
+
+        'R' to listOf(false, false, false, false, true, false, true),
+        'S' to listOf(true, false, true, true, false, true, true),
+        'N' to listOf(false, false, true, false, true, false, true),
+        'I' to listOf(false, true, true, false, false, false, false),
+        'G' to listOf(true, false, true, true, true, true, true),
+        'O' to listOf(true, true, true, true, true, true, false),
+        'T' to listOf(false, false, false, true, true, true, true),
+
     )
 
     val states = segments ?: run {
