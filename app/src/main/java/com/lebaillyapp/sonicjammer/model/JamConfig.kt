@@ -18,7 +18,8 @@ package com.lebaillyapp.sonicjammer.model
  */
 data class JamConfig(
     val sampleRate: Int = 44100,
-    val baseFreq: Double = 17800.0,
+    val minFreq: Double = 17800.0,
+    val maxFreq: Double = 17800.0,
     val freqDev: Double = 500.0,
     val modFreq: Double = 5.0,
     val modDepth: Double = 0.6,
