@@ -37,22 +37,30 @@ class UltrasonicAudioServiceImpl : UltrasonicAudioService {
      * Continuously generates and emits audio buffers according to the current configuration.
      *
      * Each buffer contains samples modulated to produce the ultrasonic jamming signal.
+     * The central frequency for each buffer is randomly selected within the configured range.
      *
      * @return A [Flow] emitting [ShortArray] audio buffers to be played or processed downstream.
      */
     override fun generateSignalFlow(): Flow<ShortArray> = flow {
         val bufferSize = config.bufferSize
         val sampleRate = config.sampleRate
+        val minFreq = config.minFreq
+        val maxFreq = config.maxFreq
 
         var sampleIndex = 0L
 
         while (true) {
+            // Step 0: Determine the current base frequency for this buffer
+            // It's randomly chosen within the configured range for each new buffer.
+            val currentBaseFreq = Random.nextDouble(minFreq, maxFreq)
+
             // Step 1: Generate buffer in Double precision (normalized [-1.0, 1.0])
             val doubleBuffer = DoubleArray(bufferSize) { i ->
                 val time = (sampleIndex + i).toDouble() / sampleRate
 
                 val fmMod = config.chaosDepth * sin(2 * PI * config.chaosFreq1 * time)
-                val instFreq = config.baseFreq +
+                // Use currentBaseFreq here instead of a fixed baseFreq
+                val instFreq = currentBaseFreq +
                         config.freqDev * sin(2 * PI * config.modFreq * time) +
                         fmMod
                 val carrier = sin(2 * PI * instFreq * time)
