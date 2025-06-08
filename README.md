@@ -55,7 +55,7 @@ To create a modulated and chaotic ultrasonic signal (17.3 kHz to 18.3 kHz) capab
 | Parameter            | Default Value                 | Description                                               |
 |----------------------|-------------------------------|-----------------------------------------------------------|
 | Sample Rate          | 44100 Hz                      | Audio sampling rate                                       |
-| Carrier Frequency    | 17800 Hz                      | Main ultrasonic frequency                                 |
+| Carrier Frequency    | 17500 Hz - 18500Hz            | Main ultrasonic frequency (range for frequency jumping)   |
 | Frequency Deviation  | ±500 Hz                       | Slow variation for FM modulation                          |
 | AM Modulation        | Depth 0.6, Frequency 5 Hz     | Slow amplitude variation                                  |
 | Distortion           | Clipping at 1.2               | To generate harmonics                                     |
