@@ -6,7 +6,6 @@ package com.lebaillyapp.sonicjammer.model
  * Configuration data class for the ultrasonic signal generator.
  *
  * @property sampleRate The audio sampling rate in Hertz (e.g., 44100).
- * @property baseFreq The central carrier frequency in Hertz (e.g., 17800).
  * @property freqDev The frequency deviation amplitude for FM modulation in Hertz (e.g., 500).
  * @property modFreq The frequency of AM and FM modulation in Hertz (e.g., 5).
  * @property modDepth The AM modulation depth (range 0 to 1, e.g., 0.6).
@@ -18,10 +17,10 @@ package com.lebaillyapp.sonicjammer.model
  */
 data class JamConfig(
     val sampleRate: Int = 44100,
-    val minFreq: Double = 17800.0,
-    val maxFreq: Double = 17800.0,
+    val minFreq: Double = 17500.0,
+    val maxFreq: Double = 18500.0,
     val freqDev: Double = 500.0,
-    val modFreq: Double = 5.0,
+    val modFreq: Double = 5.0, // try  6-8hz (more human voice range)
     val modDepth: Double = 0.6,
     val clipFactor: Double = 1.2,
     val burstProbability: Float = 0.3f,
