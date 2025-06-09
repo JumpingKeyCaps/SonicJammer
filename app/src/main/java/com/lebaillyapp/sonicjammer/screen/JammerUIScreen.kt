@@ -18,6 +18,7 @@ import com.lebaillyapp.sonicjammer.composition.ButtonRockerSwitchVertical
 import com.lebaillyapp.sonicjammer.viewmodel.JamViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lebaillyapp.sonicjammer.R
+import com.lebaillyapp.sonicjammer.composition.RealisticLED
 import com.lebaillyapp.sonicjammer.composition.RepeatingRippleCyberCanvas
 import com.lebaillyapp.sonicjammer.composition.SyncedDualModalSheet
 import com.lebaillyapp.sonicjammer.oldStuff.composable.afficheurs.DynamikRowAfficheur
@@ -85,16 +86,16 @@ fun JammerUIButtonPreview() {
 
     //todo UI TEST ONLY - to replace by jamconfig from viewmodel
     var ampModFrequencyValue by remember { mutableStateOf(5.0) }
-    var ampModDepthValue by remember { mutableStateOf(0.6) }
+    var ampModDepthValue by remember { mutableStateOf(6.0) }// real val is divised by 10 (0.6)
     var chaosFrequencyValue by remember { mutableStateOf(130.0) }
     var chaosDepthValue by remember { mutableStateOf(150.0) }
-    var burstProbabilityValue by remember { mutableStateOf(0.3f) }
-    var clipFactorValue by remember { mutableStateOf(1.2) }
+    var burstProbabilityValue by remember { mutableStateOf(3f) }// real val is divised by 10 (0.3)
+    var clipFactorValue by remember { mutableStateOf(12f) }// real val is divised by 10 (1.2)
     var minFreqValue by remember { mutableStateOf(17500.0) }
     var maxFreqValue by remember { mutableStateOf(18500.0) }
+    var freqDevValue by remember { mutableStateOf(500.0) }
 
 
-    var minFreqlastStep by remember { mutableStateOf(0) }
 
 
     //todo -------------------------------------------------------------
@@ -152,265 +153,17 @@ fun JammerUIButtonPreview() {
             visible = isVisible,
             onDismiss = { isVisible = false },
             scrimMaxAlpha = 0.5f,
-            topSheetRatio = 0.42f,
-            bottomSheetRatio = 0.50f,
+            topSheetRatio = 0.36f,
+            bottomSheetRatio = 0.20f,
             autoDismissThresholdRatio = 0.10f,
-            modalBackgroundColor = Color(0xEB131313),
+            modalBackgroundColor = Color(0xED050505),
             cornerRadius = 20.dp,
             peekHeight = 0.dp,
             topContent = {
                 //top Modal : values
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-
-                    //Display Amp mod values
-                    Row(modifier = Modifier.padding(top = 10.dp).fillMaxWidth()) {
-                        Spacer(Modifier.width(10.dp))
-
-                        //COL 1 ---
-                        Column(modifier = Modifier.align(Alignment.CenterVertically)){
-
-
-
-                            Spacer(Modifier.height(10.dp))
-                            //#### [Display decoy values]
-                            Card(
-                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                shape = RoundedCornerShape(10.dp),
-                                colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = Color(0xFF0C0C0C)),
-                                elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 10.dp)
-                            ) {
-                                Box(modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 5.dp, bottom = 0.dp), contentAlignment = Alignment.Center){
-                                    Column(modifier = Modifier.align(Alignment.Center)) {
-                                        Text(text = "Decoy",
-                                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                                            color = Color(0xFF434344),
-                                            style = MaterialTheme.typography.labelLarge,
-                                            textAlign = TextAlign.Center,
-                                            fontSize = 12.sp)
-
-                                        Spacer(Modifier.height(10.dp))
-                                        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                                            //%burst
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                                                DynamikRowAfficheur(
-                                                    configs = iteratorConfigGenerator(
-                                                        sevenSegCfg = SevenSegmentConfig(
-                                                            digit = null,
-                                                            char = null,
-                                                            manualSegments = null,
-                                                            segmentLength = 12.dp,
-                                                            segmentHorizontalLength = 12.dp,
-                                                            segmentThickness = 3.dp,
-                                                            bevel = 2.dp,
-                                                            onColor = Color(0xFFFF3D00),
-                                                            offColor = Color(0xFF141617),
-                                                            alpha = 1f,
-                                                            glowRadius = 20f,
-                                                            flickerAmplitude = 0.25f,
-                                                            flickerFrequency = 2f,
-                                                            idleMode = false,
-                                                            idleSpeed = 100
-                                                        ),
-                                                        nbrDigit = 3
-                                                    ),
-                                                    reflectConfig = reflectConfig(),
-                                                    overrideValue = "${(burstProbabilityValue*10f).toInt()}",
-                                                    reversedOverride = true,
-                                                    showZeroWhenEmpty = true,
-                                                    activateReflect = false,
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    extraSpacingStep = 0,
-                                                    extraSpacing = 15.dp
-                                                )
-                                                Spacer(Modifier.height(10.dp))
-                                                Text(
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    text = "Burst(%)",
-                                                    color = Color(0xFF312E2E),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
-
-                                                )
-
-                                            }
-                                            Spacer(Modifier.width(15.dp))
-                                            //clip
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                DynamikRowAfficheur(
-                                                    configs = iteratorConfigGenerator(
-                                                        sevenSegCfg = SevenSegmentConfig(
-                                                            digit = null,
-                                                            char = null,
-                                                            manualSegments = null,
-                                                            segmentLength = 12.dp,
-                                                            segmentHorizontalLength = 12.dp,
-                                                            segmentThickness = 3.dp,
-                                                            bevel = 2.dp,
-                                                            onColor = Color(0xFFFFC400),
-                                                            offColor = Color(0xFF141617),
-                                                            alpha = 1f,
-                                                            glowRadius = 20f,
-                                                            flickerAmplitude = 0.25f,
-                                                            flickerFrequency = 2f,
-                                                            idleMode = false,
-                                                            idleSpeed = 100
-                                                        ),
-                                                        nbrDigit = 3
-                                                    ),
-                                                    reflectConfig = reflectConfig(),
-                                                    overrideValue = "${(clipFactorValue*10.0f).toInt()}",
-                                                    reversedOverride = true,
-                                                    showZeroWhenEmpty = true,
-                                                    activateReflect = false,
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    extraSpacingStep = 0,
-                                                    extraSpacing = 15.dp
-                                                )
-                                                Spacer(Modifier.height(10.dp))
-                                                Text(
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    text = "Clip",
-                                                    color = Color(0xFF312E2E),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            Spacer(Modifier.height(10.dp))
-
-
-                        }
-                        Spacer(Modifier.width(10.dp))
-                        //COL 2 ---
-                        Column(modifier = Modifier.align(Alignment.CenterVertically)){
-                            //#### [Display freq range]
-                            Card(
-                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                shape = RoundedCornerShape(10.dp),
-                                colors = androidx.compose.material3.CardDefaults.cardColors( containerColor = Color(0xFF0C0C0C)),
-                                elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 10.dp )
-                            ) {
-                                Box(modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 5.dp, bottom = 0.dp), contentAlignment = Alignment.Center){
-                                    Column(modifier = Modifier.align(Alignment.Center)) {
-                                        Text(text = "Freq Range",
-                                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                                            color = Color(0xFF434344),
-                                            style = MaterialTheme.typography.labelLarge,
-                                            textAlign = TextAlign.Center,
-                                            fontSize = 12.sp)
-
-                                        Spacer(Modifier.height(10.dp))
-                                        //min value
-                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                                            DynamikRowAfficheur(
-                                                configs = iteratorConfigGenerator(
-                                                    sevenSegCfg = SevenSegmentConfig(
-                                                        digit = null,
-                                                        char = null,
-                                                        manualSegments = null,
-                                                        segmentLength = 15.dp,
-                                                        segmentHorizontalLength = 15.dp,
-                                                        segmentThickness = 3.dp,
-                                                        bevel = 2.dp,
-                                                        onColor = Color(0xFFFBFBFB),
-                                                        offColor = Color(0xFF141617),
-                                                        alpha = 1f,
-                                                        glowRadius = 20f,
-                                                        flickerAmplitude = 0.25f,
-                                                        flickerFrequency = 2f,
-                                                        idleMode = false,
-                                                        idleSpeed = 100
-                                                    ),
-                                                    nbrDigit = 5
-                                                ),
-                                                reflectConfig = reflectConfig(),
-                                                overrideValue = "${minFreqValue.toInt()}",
-                                                reversedOverride = true,
-                                                showZeroWhenEmpty = true,
-                                                activateReflect = false,
-                                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                extraSpacingStep = 0,
-                                                extraSpacing = 15.dp
-                                            )
-                                            Spacer(Modifier.height(10.dp))
-                                            Text(
-                                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                text = "Min(Hz)",
-                                                color = Color(0xFF312E2E),
-                                                style = MaterialTheme.typography.labelSmall,
-                                                textAlign = TextAlign.Center,
-                                                fontSize = 10.sp
-
-                                            )
-
-                                        }
-                                        Spacer(Modifier.height(10.dp))
-                                        //max value
-                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                                            DynamikRowAfficheur(
-                                                configs = iteratorConfigGenerator(
-                                                    sevenSegCfg = SevenSegmentConfig(
-                                                        digit = null,
-                                                        char = null,
-                                                        manualSegments = null,
-                                                        segmentLength = 15.dp,
-                                                        segmentHorizontalLength = 15.dp,
-                                                        segmentThickness = 3.dp,
-                                                        bevel = 2.dp,
-                                                        onColor = Color(0xFFFBFBFB),
-                                                        offColor = Color(0xFF141617),
-                                                        alpha = 1f,
-                                                        glowRadius = 20f,
-                                                        flickerAmplitude = 0.25f,
-                                                        flickerFrequency = 2f,
-                                                        idleMode = false,
-                                                        idleSpeed = 100
-                                                    ),
-                                                    nbrDigit = 5
-                                                ),
-                                                reflectConfig = reflectConfig(),
-                                                overrideValue = "${maxFreqValue.toInt()}",
-                                                reversedOverride = true,
-                                                showZeroWhenEmpty = true,
-                                                activateReflect = false,
-                                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                extraSpacingStep = 0,
-                                                extraSpacing = 15.dp
-                                            )
-                                            Spacer(Modifier.height(10.dp))
-                                            Text(
-                                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                text = "Max(Hz)",
-                                                color = Color(0xFF312E2E),
-                                                style = MaterialTheme.typography.labelSmall,
-                                                textAlign = TextAlign.Center,
-                                                fontSize = 10.sp
-
-                                            )
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                }
-            },
-            bottomContent = {
-                //Bottom Modal : knobs
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
                     Column(modifier = Modifier.padding(top = 10.dp).fillMaxWidth()) {
-                        Spacer(Modifier.width(10.dp))
+                        Spacer(Modifier.height(10.dp))
                         //line 1
                         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                             //#### [Modulation settings]
@@ -487,7 +240,7 @@ fun JammerUIButtonPreview() {
                                                     nbrDigit = 3
                                                 ),
                                                 reflectConfig = reflectConfig(),
-                                                overrideValue = "${(ampModDepthValue*10.0f).toInt()}",
+                                                overrideValue = "${ampModDepthValue.toInt()}",
                                                 reversedOverride = true,
                                                 showZeroWhenEmpty = true,
                                                 activateReflect = false,
@@ -505,7 +258,8 @@ fun JammerUIButtonPreview() {
                                                 RRKnobV2(
                                                     size = 50.dp,
                                                     steps = 7,
-                                                    onValueChanged = {},
+                                                    onValueChanged = {delta ->
+                                                        ampModFrequencyValue += delta * 1.0},
                                                     indicatorColor = Color(0xFF651FFF),
                                                     indicatorSecondaryColor = Color(0xFF2979FF),
                                                     tickColor = Color(0xFF2F2D2D),
@@ -530,7 +284,8 @@ fun JammerUIButtonPreview() {
                                                 RRKnobV2(
                                                     size = 50.dp,
                                                     steps = 7,
-                                                    onValueChanged = {},
+                                                    onValueChanged = {delta ->
+                                                        ampModDepthValue += delta * 1.0},
                                                     indicatorColor = Color(0xFF651FFF),
                                                     indicatorSecondaryColor = Color(0xFF2979FF),
                                                     tickColor = Color(0xFF2F2D2D),
@@ -699,168 +454,365 @@ fun JammerUIButtonPreview() {
                         Spacer(Modifier.height(10.dp))
                         //line 2
                         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-
-                            //#### [Decoy settings]
+                            //#### [burst settings]
                             Card(
-                                modifier = Modifier.align(Alignment.CenterVertically),
+                                modifier = Modifier.align(Alignment.Top),
                                 shape = RoundedCornerShape(10.dp),
                                 colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = Color(0xFF0C0C0C)),
                                 elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 10.dp)
                             ) {
-                                Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 0.dp), contentAlignment = Alignment.Center){
-                                    Column(modifier = Modifier.align(Alignment.Center)) {
-                                        Text(text = "Decoy",
-                                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                                            color = Color(0xFF434344),
-                                            style = MaterialTheme.typography.labelLarge,
-                                            textAlign = TextAlign.Center,
-                                            fontSize = 12.sp)
+                                Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp), contentAlignment = Alignment.Center){
+                                    Row(modifier = Modifier.align(Alignment.Center)) {
+                                        //#### [knob burst ]
+                                        Column( modifier = Modifier.align(Alignment.CenterVertically).padding(top = 10.dp,bottom = 10.dp)) {
+                                            RRKnobV2(
+                                                size = 50.dp,
+                                                steps = 7,
+                                                onValueChanged = {delta ->
+                                                    burstProbabilityValue += (delta * 1.0).toInt()},
+                                                indicatorColor = Color(0xFFFFC400),
+                                                indicatorSecondaryColor = Color(0xFFFF9100),
+                                                tickColor = Color(0xFF2F2D2D),
+                                                activeTickColor = Color(0xFFFF3D00),
+                                                tickLength = 2.dp
+                                            )
 
-                                        Spacer(Modifier.height(10.dp))
-                                        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                                            //burstProbability knob
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        }
+                                        Spacer(Modifier.width(30.dp))
+                                        Column(modifier = Modifier.align(Alignment.Top).padding(top = 0.dp)) {
+                                            Text(text = "% Burst",
+                                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                                color = Color(0xFF434344),
+                                                style = MaterialTheme.typography.labelLarge,
+                                                textAlign = TextAlign.Center,
+                                                fontSize = 12.sp)
+                                            Spacer(Modifier.height(8.dp))
+                                            //#### [freq dev values]
+                                            DynamikRowAfficheur(
+                                                configs = iteratorConfigGenerator(
+                                                    sevenSegCfg = SevenSegmentConfig(
+                                                        digit = null,
+                                                        char = null,
+                                                        manualSegments = null,
+                                                        segmentLength = 8.dp,
+                                                        segmentHorizontalLength = 8.dp,
+                                                        segmentThickness = 2.dp,
+                                                        bevel = 1.dp,
+                                                        onColor = Color(0xFFFF3D00),
+                                                        offColor = Color(0xFF141617),
+                                                        alpha = 1f,
+                                                        glowRadius = 20f,
+                                                        flickerAmplitude = 0.25f,
+                                                        flickerFrequency = 2f,
+                                                        idleMode = false,
+                                                        idleSpeed = 100
+                                                    ),
+                                                    nbrDigit = 3
+                                                ),
+                                                reflectConfig = reflectConfig(),
+                                                overrideValue = "${burstProbabilityValue.toInt()}",
+                                                reversedOverride = true,
+                                                showZeroWhenEmpty = true,
+                                                activateReflect = false,
+                                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                                extraSpacingStep = 0,
+                                                extraSpacing = 15.dp
+                                            )
 
-                                                RRKnobV2(
-                                                    size = 50.dp,
-                                                    steps = 7,
-                                                    onValueChanged = {delta ->
-                                                        burstProbabilityValue += (delta * 0.1f).toInt()},
-                                                    indicatorColor = Color(0xFFFFC400),
-                                                    indicatorSecondaryColor = Color(0xFFFF9100),
-                                                    tickColor = Color(0xFF2F2D2D),
-                                                    activeTickColor = Color(0xFFFF3D00),
-                                                    tickLength = 2.dp
-                                                )
-                                                Spacer(Modifier.height(10.dp))
-                                                Text(
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    text = "% Burst",
-                                                    color = Color(0xFF312E2E),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
 
-                                                )
-
-                                            }
-                                            Spacer(Modifier.width(35.dp))
-                                            //clip factor knob
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                RRKnobV2(
-                                                    size = 50.dp,
-                                                    steps = 7,
-                                                    onValueChanged = {delta ->
-                                                        clipFactorValue += delta * 1.0
-                                                    },
-                                                    indicatorColor = Color(0xFFFFC400),
-                                                    indicatorSecondaryColor = Color(0xFFFF9100),
-                                                    tickColor = Color(0xFF2F2D2D),
-                                                    activeTickColor = Color(0xFFFF3D00),
-                                                    tickLength = 2.dp
-                                                )
-                                                Spacer(Modifier.height(10.dp))
-                                                Text(
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    text = "Clip",
-                                                    color = Color(0xFF312E2E),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
-                                                )
-                                            }
                                         }
                                     }
                                 }
                             }
+
                             Spacer(Modifier.width(10.dp))
-                            //#### [Base frequency settings]
+                            //#### [Freq deviation settings]
                             Card(
-                                modifier = Modifier.align(Alignment.CenterVertically),
+                                modifier = Modifier.align(Alignment.Top),
                                 shape = RoundedCornerShape(10.dp),
                                 colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = Color(0xFF0C0C0C)),
                                 elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 10.dp)
                             ) {
-                                Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 0.dp), contentAlignment = Alignment.Center){
-                                    Column(modifier = Modifier.align(Alignment.Center)) {
+                                Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp), contentAlignment = Alignment.Center){
+                                    Row(modifier = Modifier.align(Alignment.Center)) {
+                                        Column(modifier = Modifier.align(Alignment.Top).padding(top = 0.dp)) {
+                                            Text(text = "Deviation",
+                                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                                color = Color(0xFF434344),
+                                                style = MaterialTheme.typography.labelLarge,
+                                                textAlign = TextAlign.Center,
+                                                fontSize = 12.sp)
+                                            Spacer(Modifier.height(8.dp))
+                                            //#### [freq dev values]
+                                            DynamikRowAfficheur(
+                                                configs = iteratorConfigGenerator(
+                                                    sevenSegCfg = SevenSegmentConfig(
+                                                        digit = null,
+                                                        char = null,
+                                                        manualSegments = null,
+                                                        segmentLength = 8.dp,
+                                                        segmentHorizontalLength = 8.dp,
+                                                        segmentThickness = 2.dp,
+                                                        bevel = 1.dp,
+                                                        onColor = Color(0xFFAD64F6),
+                                                        offColor = Color(0xFF141617),
+                                                        alpha = 1f,
+                                                        glowRadius = 20f,
+                                                        flickerAmplitude = 0.25f,
+                                                        flickerFrequency = 2f,
+                                                        idleMode = false,
+                                                        idleSpeed = 100
+                                                    ),
+                                                    nbrDigit = 3
+                                                ),
+                                                reflectConfig = reflectConfig(),
+                                                overrideValue = "${freqDevValue.toInt()}",
+                                                reversedOverride = true,
+                                                showZeroWhenEmpty = true,
+                                                activateReflect = false,
+                                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                                extraSpacingStep = 0,
+                                                extraSpacing = 15.dp
+                                            )
+
+
+                                        }
+                                        Spacer(Modifier.width(30.dp))
+                                        //#### [knob deviation ]
+                                        Column( modifier = Modifier.align(Alignment.CenterVertically).padding(top = 10.dp,bottom = 10.dp)) {
+                                            RRKnobV2(
+                                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                                size = 50.dp,
+                                                steps = 7,
+                                                onValueChanged = {delta ->
+                                                    freqDevValue += delta * 50.0},
+                                                indicatorColor = Color(0xFF651FFF),
+                                                indicatorSecondaryColor = Color(0xFF6F0581),
+                                                tickColor = Color(0xFF2F2D2D),
+                                                activeTickColor = Color(0xFFAD64F6),
+                                                tickLength = 2.dp
+                                            )
+
+                                        }
+                                    }
+
+
+
+
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+            },
+            bottomContent = {
+                //Bottom Modal : knobs
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+                    Row(modifier = Modifier.padding(top = 4.dp).align(Alignment.Center)) {
+                        //### LED BARRE GAUCHE
+                        Column(modifier = Modifier.align(Alignment.CenterVertically)) {
+                            RealisticLED(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                isOn = true,
+                                color = Color(0xFF76FF03),
+                                size = 25f,
+                                haloSpacer = 1 ,
+                                blinkInterval = 0)
+                            Spacer(Modifier.height(0.dp))
+                            RealisticLED(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                isOn = true,
+                                color = Color(0xFF00E676),
+                                size = 20f,
+                                haloSpacer = 1 ,
+                                blinkInterval = 0)
+                            Spacer(Modifier.height(0.dp))
+                            RealisticLED(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                isOn = true,
+                                color = Color(0xFF1DE9B6),
+                                size = 15f,
+                                haloSpacer = 1,
+                                blinkInterval = 0)
+                        }
+                        Spacer(Modifier.width(5.dp))
+                        //#### [Base frequency settings]
+                        Card(
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = Color(
+                                0xFF0A0A0A)
+                            ),
+                            elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 10.dp)
+                        ) {
+                            Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 0.dp), contentAlignment = Alignment.Center){
+                                Row(modifier = Modifier.align(Alignment.TopCenter).padding(top = 10.dp)) {
+                                    //### knobs
+                                    //max freq knob
+                                    Column(modifier = Modifier.align(Alignment.CenterVertically).padding(top = 10.dp)) {
+
+                                        RRKnobV2(
+                                            size = 50.dp,
+                                            steps = 7,
+                                            onValueChanged = {delta ->
+                                                maxFreqValue += delta * 100.0
+                                            },
+                                            indicatorColor = Color(0xFFF50057),
+                                            indicatorSecondaryColor = Color(0xFFFF1744),
+                                            tickColor = Color(0xFF2F2D2D),
+                                            activeTickColor = Color(0xFFFFFFFF),
+                                            tickLength = 2.dp
+                                        )
+                                        Spacer(Modifier.height(10.dp))
+                                        Text(
+                                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                                            text = "Max Hz",
+                                            color = Color(0xFF312E2E),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            textAlign = TextAlign.Center,
+                                            fontSize = 10.sp
+
+                                        )
+
+                                    }
+                                    Spacer(Modifier.width(25.dp))
+                                    Column(modifier = Modifier.align(Alignment.CenterVertically)) {
                                         Text(text = "Freq Range",
                                             modifier = Modifier.align(Alignment.CenterHorizontally),
                                             color = Color(0xFF434344),
                                             style = MaterialTheme.typography.labelLarge,
                                             textAlign = TextAlign.Center,
                                             fontSize = 12.sp)
+                                        Spacer(Modifier.height(8.dp))
+                                        //### display freq range
 
+
+                                        DynamikRowAfficheur(
+                                            configs = iteratorConfigGenerator(
+                                                sevenSegCfg = SevenSegmentConfig(
+                                                    digit = null,
+                                                    char = null,
+                                                    manualSegments = null,
+                                                    segmentLength = 8.dp,
+                                                    segmentHorizontalLength = 8.dp,
+                                                    segmentThickness = 2.dp,
+                                                    bevel = 1.dp,
+                                                    onColor = Color(0xFFFBFBFB),
+                                                    offColor = Color(0xFF141617),
+                                                    alpha = 1f,
+                                                    glowRadius = 20f,
+                                                    flickerAmplitude = 0.25f,
+                                                    flickerFrequency = 2f,
+                                                    idleMode = false,
+                                                    idleSpeed = 100
+                                                ),
+                                                nbrDigit = 5
+                                            ),
+                                            reflectConfig = reflectConfig(),
+                                            overrideValue = "${maxFreqValue.toInt()}",
+                                            reversedOverride = true,
+                                            showZeroWhenEmpty = true,
+                                            activateReflect = false,
+                                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                                            extraSpacingStep = 0,
+                                            extraSpacing = 15.dp
+                                        )
                                         Spacer(Modifier.height(10.dp))
-                                        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                                            //max freq knob
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        DynamikRowAfficheur(
+                                            configs = iteratorConfigGenerator(
+                                                sevenSegCfg = SevenSegmentConfig(
+                                                    digit = null,
+                                                    char = null,
+                                                    manualSegments = null,
+                                                    segmentLength = 6.dp,
+                                                    segmentHorizontalLength = 6.dp,
+                                                    segmentThickness = 2.dp,
+                                                    bevel = 1.dp,
+                                                    onColor = Color(0xFFF50057),
+                                                    offColor = Color(0xFF141617),
+                                                    alpha = 1f,
+                                                    glowRadius = 20f,
+                                                    flickerAmplitude = 0.25f,
+                                                    flickerFrequency = 2f,
+                                                    idleMode = false,
+                                                    idleSpeed = 100
+                                                ),
+                                                nbrDigit = 5
+                                            ),
+                                            reflectConfig = reflectConfig(),
+                                            overrideValue = "${minFreqValue.toInt()}",
+                                            reversedOverride = true,
+                                            showZeroWhenEmpty = true,
+                                            activateReflect = false,
+                                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                                            extraSpacingStep = 0,
+                                            extraSpacing = 15.dp
+                                        )
 
-                                                RRKnobV2(
-                                                    size = 50.dp,
-                                                    steps = 7,
-                                                    onValueChanged = {delta ->
-                                                        maxFreqValue += delta * 10.0
-                                                    },
-                                                    indicatorColor = Color(0xFFF50057),
-                                                    indicatorSecondaryColor = Color(0xFFFF1744),
-                                                    tickColor = Color(0xFF2F2D2D),
-                                                    activeTickColor = Color(0xFFFFFFFF),
-                                                    tickLength = 2.dp
-                                                )
-                                                Spacer(Modifier.height(10.dp))
-                                                Text(
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    text = "Max Hz",
-                                                    color = Color(0xFF312E2E),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
+                                        Spacer(Modifier.height(25.dp))
 
-                                                )
-
-                                            }
-                                            Spacer(Modifier.width(35.dp))
-                                            //min freq knob
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                RRKnobV2(
-                                                    size = 50.dp,
-                                                    steps = 7,
-                                                    onValueChanged = { delta ->
-                                                        minFreqValue += delta * 10.0
-                                                    },
-                                                    indicatorColor = Color(0xFFF50057),
-                                                    indicatorSecondaryColor = Color(0xFFFF1744),
-                                                    tickColor = Color(0xFF2F2D2D),
-                                                    activeTickColor = Color(0xFFFFFFFF),
-                                                    tickLength = 2.dp
-                                                )
-                                                Spacer(Modifier.height(10.dp))
-                                                Text(
-                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                    text = "Min Hz",
-                                                    color = Color(0xFF312E2E),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
-                                                )
-                                            }
-                                        }
+                                    }
+                                    Spacer(Modifier.width(25.dp))
+                                    //min freq knob
+                                    Column(modifier = Modifier.align(Alignment.CenterVertically).padding(top = 10.dp)) {
+                                        RRKnobV2(
+                                            size = 50.dp,
+                                            steps = 7,
+                                            onValueChanged = { delta ->
+                                                minFreqValue += delta * 100.0
+                                            },
+                                            indicatorColor = Color(0xFFF50057),
+                                            indicatorSecondaryColor = Color(0xFFFF1744),
+                                            tickColor = Color(0xFF2F2D2D),
+                                            activeTickColor = Color(0xFFFFFFFF),
+                                            tickLength = 2.dp
+                                        )
+                                        Spacer(Modifier.height(10.dp))
+                                        Text(
+                                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                                            text = "Min Hz",
+                                            color = Color(0xFF312E2E),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            textAlign = TextAlign.Center,
+                                            fontSize = 10.sp
+                                        )
                                     }
                                 }
                             }
-
-
                         }
-
+                        Spacer(Modifier.width(5.dp))
+                        //#### LED BARRE DROITE
+                        Column(modifier = Modifier.align(Alignment.CenterVertically)) {
+                            RealisticLED(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                isOn = true,
+                                color = Color(0xFF76FF03),
+                                size = 25f,
+                                haloSpacer = 1 ,
+                                blinkInterval = 0)
+                            Spacer(Modifier.height(0.dp))
+                            RealisticLED(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                isOn = true,
+                                color = Color(0xFF00E676),
+                                size = 20f,
+                                haloSpacer = 1 ,
+                                blinkInterval = 0)
+                            Spacer(Modifier.height(0.dp))
+                            RealisticLED(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                isOn = true,
+                                color = Color(0xFF1DE9B6),
+                                size = 15f,
+                                haloSpacer = 1,
+                                blinkInterval = 0)
+                        }
 
                     }
                 }
             }
         )
-
-
-
-
-
     }
 }
