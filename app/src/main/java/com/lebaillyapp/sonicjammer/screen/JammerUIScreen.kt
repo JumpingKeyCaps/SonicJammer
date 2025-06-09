@@ -18,6 +18,7 @@ import com.lebaillyapp.sonicjammer.composition.ButtonRockerSwitchVertical
 import com.lebaillyapp.sonicjammer.viewmodel.JamViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lebaillyapp.sonicjammer.R
+import com.lebaillyapp.sonicjammer.composition.GlassButton
 import com.lebaillyapp.sonicjammer.composition.RealisticLED
 import com.lebaillyapp.sonicjammer.composition.RepeatingRippleCyberCanvas
 import com.lebaillyapp.sonicjammer.composition.SyncedDualModalSheet
@@ -27,6 +28,7 @@ import com.lebaillyapp.sonicjammer.oldStuff.config.SevenSegmentConfig
 import com.lebaillyapp.sonicjammer.oldStuff.config.reflectConfig
 import com.lebaillyapp.sonicjammer.oldStuff.iteratorConfigGenerator
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 
 @Composable
@@ -83,6 +85,8 @@ fun JammerUIScreen(
 fun JammerUIButtonPreview() {
     var isChecked by remember { mutableStateOf(false) }
 
+    var isClassicJammerMode by remember { mutableStateOf(true) }
+
     var isVisible by remember { mutableStateOf(false) }
 
     //todo UI TEST ONLY - to replace by jamconfig from viewmodel
@@ -103,9 +107,9 @@ fun JammerUIButtonPreview() {
     var isLed3Active by remember { mutableStateOf(false) }
     var isLed4Active by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        while (true) {
 
+    LaunchedEffect(isChecked) {
+        while (isChecked) {
             delay(100)
             isLed1Active = !isLed1Active
             delay(100)
@@ -114,10 +118,14 @@ fun JammerUIButtonPreview() {
             isLed3Active = !isLed3Active
             delay(100)
             isLed4Active = !isLed4Active
-
+            delay(100)
         }
-
+        isLed1Active = false
+        isLed2Active = false
+        isLed3Active = false
+        isLed4Active = false
     }
+
 
 
 
@@ -137,13 +145,13 @@ fun JammerUIButtonPreview() {
             modifier = Modifier.fillMaxSize(),
             intervalMs = 1000,//1000
             speed = 0.99f,
-            amplitude = 150f,//150
-            gridSize = 30, //20 (lower = more dots so need good smartphone (galaxy S))
+            amplitude = 150f,
+            gridSize = 45, //20 (lower = more dots so need good smartphone (galaxy S))
             isActive = isChecked,
             colorBase = Color(0xFFF50057),//0xFFF50057
             colorAccent = Color(0xFFFF9100), // 0xFF1A181A
             radiusDots = 3.5f,
-            frameRate = 32L
+            frameRate = 42L
         )
 
 
@@ -179,7 +187,7 @@ fun JammerUIButtonPreview() {
             onDismiss = { isVisible = false },
             scrimMaxAlpha = 0.2f,
             topSheetRatio = 0.15f,
-            bottomSheetRatio = 0.38f,
+            bottomSheetRatio = 0.45f,
             autoDismissThresholdRatio = 0.10f,
             modalBackgroundColor = Color(0xED050505),
             cornerRadius = 20.dp,
@@ -348,7 +356,44 @@ fun JammerUIButtonPreview() {
             bottomContent = {
                 //Bottom Modal : knobs
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-                    Column(modifier = Modifier.padding(top = 10.dp).fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(top = 15.dp).fillMaxWidth()) {
+                        Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
+                            GlassButton(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                text = if (isChecked) "Stop" else "Start",
+                                isOn = true,
+                                color = if (isChecked) Color(0xFFFF1744) else Color(0xFF501AC7),
+                                textColor = Color(0xFFFFFFFF),
+                                width = 100.dp,
+                                height = 30.dp,
+                                cornerRadius = 7.dp,
+                                textSize = 13.sp,
+                                glowRadius = 1.1f,
+                                onClick = {
+                                    isChecked = !isChecked
+                                }
+                            )
+                            Spacer(Modifier.width(20.dp))
+                            GlassButton(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                text = if (!isClassicJammerMode) "SCO" else "Regular",
+                                isOn = true,
+                                color = if (!isClassicJammerMode) Color(0xFF00BFA5) else Color(
+                                    0xFFFF9100
+                                ),
+                                textColor = Color(0xFFFFFFFF),
+                                width = 100.dp,
+                                height = 30.dp,
+                                cornerRadius = 7.dp,
+                                textSize = 13.sp,
+                                glowRadius = 1.1f,
+                                onClick = { isClassicJammerMode = !isClassicJammerMode }
+                            )
+
+                        }
+
+
+                        Spacer(Modifier.height(6.dp))
                         Row(modifier = Modifier.padding(top = 4.dp).align(Alignment.CenterHorizontally)) {
                             //### LED BARRE GAUCHE
                             Column(modifier = Modifier.align(Alignment.CenterVertically)) {
