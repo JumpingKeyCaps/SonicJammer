@@ -98,15 +98,16 @@ fun RRKnobV2(
                             rotationAngle = (rotationAngle + delta) % 360f
                             if (rotationAngle < 0) rotationAngle += 360f
 
-                            // Normaliser rotationAngle pour prendre en compte le décalage visuel
                             val normalizedAngle = (rotationAngle - initialRotationOffset + 360f) % 360f
-
                             val newStep = ((normalizedAngle / 360f) * steps).roundToInt() % steps
+
                             if (newStep != currentStep) {
+                                val direction = if ((newStep - currentStep + steps) % steps > steps / 2) -1 else 1
                                 currentStep = newStep
-                                onValueChanged(currentStep)
+                                onValueChanged(direction)
                                 haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             }
+
                             lastTouchAngle = newAngle
                         }
                     },
