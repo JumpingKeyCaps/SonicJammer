@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lebaillyapp.sonicjammer.R
 import kotlin.random.Random
 
 @Composable
@@ -136,6 +137,7 @@ fun GlassButton(
             color = textColor.copy(alpha = if (isOn) 0.95f else 0.7f),
             fontSize = textSize,
             fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily(Font(R.font.micro_regular)),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .alpha(if (isOn) 1f else 0.8f)
