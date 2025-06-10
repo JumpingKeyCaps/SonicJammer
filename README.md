@@ -1,3 +1,12 @@
+
+<p align="center">
+  <img src="screenshots/appico.png" alt="Logo" width="433" height="433">
+</p>
+
+
+---
+
+
 # Ultrasonic Audio Jammer - Android
 
 ![Platform](https://img.shields.io/badge/platform-Android-green?logo=android)
