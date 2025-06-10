@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+
 }
 
 android {
@@ -37,6 +40,7 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
@@ -59,8 +63,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation ("androidx.compose.foundation:foundation:1.8.2")
-    implementation ("androidx.compose.ui:ui:1.4.3")
-    implementation ("androidx.compose.material3:material3:1.1.0")
+    implementation ("androidx.compose.ui:ui:1.8.2")
+    implementation ("androidx.compose.material3:material3:1.3.2")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
+
+    //Hilt (DI)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
 
 }
