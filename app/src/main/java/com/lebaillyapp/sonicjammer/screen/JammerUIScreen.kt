@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +25,7 @@ import com.lebaillyapp.sonicjammer.viewmodel.JamViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lebaillyapp.sonicjammer.R
 import com.lebaillyapp.sonicjammer.composition.GlassButton
+import com.lebaillyapp.sonicjammer.composition.RRStartStopButtonRect
 import com.lebaillyapp.sonicjammer.composition.RealisticLED
 import com.lebaillyapp.sonicjammer.composition.RepeatingRippleCyberCanvas
 import com.lebaillyapp.sonicjammer.composition.SyncedDualModalSheet
@@ -161,6 +165,8 @@ fun JammerUIButtonPreview() {
 
 
 
+
+
         // dual modal for settings
         SyncedDualModalSheetGlassUp(
             visible = isVisible,
@@ -182,53 +188,58 @@ fun JammerUIButtonPreview() {
                             modifier = Modifier.size(180.dp).align(Alignment.CenterHorizontally),
                             contentScale = ContentScale.Crop // ou Fit, FillBounds, etc.
                         )
-
                     }
+
+
+
                 }
             },
             bottomContent = {
                 //Bottom Modal : knobs
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-                    Column(modifier = Modifier.padding(top = 15.dp).fillMaxWidth()) {
-                        Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
-                            GlassButton(
+                    Column(modifier = Modifier.padding(top = 0.dp).fillMaxWidth()) {
+
+                        Spacer(Modifier.height(10.dp))
+
+                        //buttons
+                        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+
+                            RRStartStopButtonRect(
                                 modifier = Modifier.align(Alignment.CenterVertically),
-                                text = if (isChecked) "Stop" else "Start",
-                                isOn = true,
-                                color = if (isChecked) Color(0xFFFF1744) else Color(0xFF501AC7),
-                                textColor = Color(0xFFFFFFFF),
-                                width = 100.dp,
-                                height = 30.dp,
-                                cornerRadius = 9.dp,
-                                textSize = 13.sp,
-                                glowRadius = 1.1f,
-                                onClick = {
-                                    isChecked = !isChecked
-
-                                    if (isChecked) {
-                                    //    isVisible = false
-                                    }
-
-                                }
+                                width = 150.dp,
+                                height = 40.dp,
+                                isStarted = isClassicJammerMode,
+                                onToggle = { isClassicJammerMode = !isClassicJammerMode },
+                                startColor = Color(0xFFFFAB00),
+                                stopColor = Color(0xFF00BFA5),
+                                textA = "RAW",
+                                textB = "SCO",
+                                backgroundColor = Color(0xFF1A1A1A),
+                                shadowColor = Color.Black.copy(alpha = 0.6f),
+                                cornerRadius = 8.dp,
+                                glowRadius = 3.dp
                             )
                             Spacer(Modifier.width(20.dp))
-                            GlassButton(
+
+                            //Start/Stop button
+                            RRStartStopButtonRect(
                                 modifier = Modifier.align(Alignment.CenterVertically),
-                                text = if (!isClassicJammerMode) "SCO" else "RAW",
-                                isOn = true,
-                                color = if (!isClassicJammerMode) Color(0xFF00BFA5) else Color(0xFFFF9100),
-                                textColor = Color(0xFFFFFFFF),
-                                width = 100.dp,
-                                height = 30.dp,
-                                cornerRadius = 9.dp,
-                                textSize = 13.sp,
-                                glowRadius = 1.1f,
-                                onClick = { isClassicJammerMode = !isClassicJammerMode }
+                                width = 150.dp,
+                                height = 40.dp,
+                                isStarted = isChecked,
+                                onToggle = { isChecked = !isChecked },
+                                startColor = Color(0xFFFF1744),
+                                stopColor = Color(0xFFFDFDFF),
+                                backgroundColor = Color(0xFF1A1A1A),
+                                shadowColor = Color.Black.copy(alpha = 0.6f),
+                                cornerRadius = 8.dp,
+                                glowRadius = 3.dp
                             )
 
-                        }
 
-                        Spacer(Modifier.height(6.dp))
+                        }
+                        Spacer(Modifier.height(5.dp))
+                        //line 0 : freq range
                         Row(modifier = Modifier.padding(top = 4.dp).align(Alignment.CenterHorizontally)) {
                             //### LED BARRE GAUCHE
                             Column(modifier = Modifier.align(Alignment.CenterVertically)) {
@@ -297,8 +308,10 @@ fun JammerUIButtonPreview() {
                                                 text = "Max Hz",
                                                 color = Color(0xFF312E2E),
                                                 style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Thin,
+                                                fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                 textAlign = TextAlign.Center,
-                                                fontSize = 10.sp
+                                                fontSize = 20.sp
 
                                             )
 
@@ -309,8 +322,10 @@ fun JammerUIButtonPreview() {
                                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                                                 color = Color(0xFF434344),
                                                 style = MaterialTheme.typography.labelLarge,
+                                                fontWeight = FontWeight.Bold,
+                                                fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                 textAlign = TextAlign.Center,
-                                                fontSize = 12.sp)
+                                                fontSize = 22.sp)
                                             Spacer(Modifier.height(8.dp))
                                             //### display freq range
 
@@ -329,8 +344,8 @@ fun JammerUIButtonPreview() {
                                                         offColor = Color(0xFF141617),
                                                         alpha = 1f,
                                                         glowRadius = 20f,
-                                                        flickerAmplitude = 0.25f,
-                                                        flickerFrequency = 2f,
+                                                        flickerAmplitude = 0.15f,
+                                                        flickerFrequency = 1f,
                                                         idleMode = false,
                                                         idleSpeed = 100
                                                     ),
@@ -360,8 +375,8 @@ fun JammerUIButtonPreview() {
                                                         offColor = Color(0xFF141617),
                                                         alpha = 1f,
                                                         glowRadius = 20f,
-                                                        flickerAmplitude = 0.25f,
-                                                        flickerFrequency = 2f,
+                                                        flickerAmplitude = 0.15f,
+                                                        flickerFrequency = 1f,
                                                         idleMode = false,
                                                         idleSpeed = 100
                                                     ),
@@ -401,8 +416,10 @@ fun JammerUIButtonPreview() {
                                                 text = "Min Hz",
                                                 color = Color(0xFF312E2E),
                                                 style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Thin,
+                                                fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                 textAlign = TextAlign.Center,
-                                                fontSize = 10.sp
+                                                fontSize = 20.sp
                                             )
                                         }
                                     }
@@ -445,7 +462,7 @@ fun JammerUIButtonPreview() {
 
                         }
                         Spacer(Modifier.height(10.dp))
-                        //line 1
+                        //line 1 : amp mod + chaos
                         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                             //#### [Modulation settings]
                             Card(
@@ -460,8 +477,10 @@ fun JammerUIButtonPreview() {
                                             modifier = Modifier.align(Alignment.CenterHorizontally),
                                             color = Color(0xFF434344),
                                             style = MaterialTheme.typography.labelLarge,
+                                            fontWeight = FontWeight.Bold,
+                                            fontFamily = FontFamily(Font(R.font.micro_regular)),
                                             textAlign = TextAlign.Center,
-                                            fontSize = 12.sp)
+                                            fontSize = 22.sp)
 
                                         Spacer(Modifier.height(8.dp))
                                         //#### [Display AM values]
@@ -553,8 +572,10 @@ fun JammerUIButtonPreview() {
                                                     text = "Frequency",
                                                     color = Color(0xFF312E2E),
                                                     style = MaterialTheme.typography.labelSmall,
+                                                    fontWeight = FontWeight.Thin,
+                                                    fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                     textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
+                                                    fontSize = 18.sp
 
                                                 )
 
@@ -579,8 +600,10 @@ fun JammerUIButtonPreview() {
                                                     text = "Depth",
                                                     color = Color(0xFF312E2E),
                                                     style = MaterialTheme.typography.labelSmall,
+                                                    fontWeight = FontWeight.Thin,
+                                                    fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                     textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
+                                                    fontSize = 18.sp
                                                 )
                                             }
                                         }
@@ -602,8 +625,10 @@ fun JammerUIButtonPreview() {
                                             modifier = Modifier.align(Alignment.CenterHorizontally),
                                             color = Color(0xFF434344),
                                             style = MaterialTheme.typography.labelLarge,
+                                            fontWeight = FontWeight.Bold,
+                                            fontFamily = FontFamily(Font(R.font.micro_regular)),
                                             textAlign = TextAlign.Center,
-                                            fontSize = 12.sp)
+                                            fontSize = 22.sp)
                                         Spacer(Modifier.height(8.dp))
                                         //#### [Display chaos values]
                                         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
@@ -695,8 +720,10 @@ fun JammerUIButtonPreview() {
                                                     text = "Frequency",
                                                     color = Color(0xFF312E2E),
                                                     style = MaterialTheme.typography.labelSmall,
+                                                    fontWeight = FontWeight.Thin,
+                                                    fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                     textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
+                                                    fontSize = 18.sp
 
                                                 )
 
@@ -722,8 +749,10 @@ fun JammerUIButtonPreview() {
                                                     text = "Depth",
                                                     color = Color(0xFF312E2E),
                                                     style = MaterialTheme.typography.labelSmall,
+                                                    fontWeight = FontWeight.Thin,
+                                                    fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                     textAlign = TextAlign.Center,
-                                                    fontSize = 10.sp
+                                                    fontSize = 18.sp
                                                 )
                                             }
                                         }
@@ -734,7 +763,7 @@ fun JammerUIButtonPreview() {
                         }
 
                         Spacer(Modifier.height(10.dp))
-                        //line 2
+                        //line 2 : burst + deviation
                         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                             //#### [burst settings]
                             Card(
@@ -746,7 +775,7 @@ fun JammerUIButtonPreview() {
                                 Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp), contentAlignment = Alignment.Center){
                                     Row(modifier = Modifier.align(Alignment.Center)) {
                                         //#### [knob burst ]
-                                        Column( modifier = Modifier.align(Alignment.CenterVertically).padding(top = 10.dp,bottom = 10.dp)) {
+                                        Column( modifier = Modifier.align(Alignment.CenterVertically).padding(top = 8.dp,bottom = 8.dp)) {
                                             RRKnobV2(
                                                 size = 50.dp,
                                                 steps = 7,
@@ -766,8 +795,10 @@ fun JammerUIButtonPreview() {
                                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                                                 color = Color(0xFF434344),
                                                 style = MaterialTheme.typography.labelLarge,
+                                                fontWeight = FontWeight.Bold,
+                                                fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                 textAlign = TextAlign.Center,
-                                                fontSize = 12.sp)
+                                                fontSize = 22.sp)
                                             Spacer(Modifier.height(8.dp))
                                             //#### [freq dev values]
                                             DynamikRowAfficheur(
@@ -815,15 +846,17 @@ fun JammerUIButtonPreview() {
                                 colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = Color(0xFF0C0C0C)),
                                 elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 10.dp)
                             ) {
-                                Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp), contentAlignment = Alignment.Center){
+                                Box(modifier = Modifier.padding(start = 15.dp, end = 20.dp, top = 10.dp, bottom = 10.dp), contentAlignment = Alignment.Center){
                                     Row(modifier = Modifier.align(Alignment.Center)) {
                                         Column(modifier = Modifier.align(Alignment.Top).padding(top = 0.dp)) {
                                             Text(text = "Deviation",
                                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                                                 color = Color(0xFF434344),
                                                 style = MaterialTheme.typography.labelLarge,
+                                                fontWeight = FontWeight.Bold,
+                                                fontFamily = FontFamily(Font(R.font.micro_regular)),
                                                 textAlign = TextAlign.Center,
-                                                fontSize = 12.sp)
+                                                fontSize = 22.sp)
                                             Spacer(Modifier.height(8.dp))
                                             //#### [freq dev values]
                                             DynamikRowAfficheur(
@@ -861,7 +894,7 @@ fun JammerUIButtonPreview() {
                                         }
                                         Spacer(Modifier.width(30.dp))
                                         //#### [knob deviation ]
-                                        Column( modifier = Modifier.align(Alignment.CenterVertically).padding(top = 10.dp,bottom = 10.dp)) {
+                                        Column( modifier = Modifier.align(Alignment.CenterVertically).padding(top = 8.dp,bottom = 8.dp)) {
                                             RRKnobV2(
                                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                                                 size = 50.dp,
