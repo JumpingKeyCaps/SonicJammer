@@ -23,7 +23,9 @@ import com.lebaillyapp.sonicjammer.screen.JammerUIButtonPreview
 import com.lebaillyapp.sonicjammer.screen.JammerUIScreen
 
 import com.lebaillyapp.sonicjammer.ui.theme.SonicJammerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         .padding(WindowInsets.systemBars.asPaddingValues()), // <-- évite l'overlap
                     contentAlignment = Alignment.TopCenter
                 ) {
-                    JammerUIButtonPreview()
+                    JammerUIButtonPreview() // version debug
                     // JammerUIScreen() // version finale
                 }
             }
