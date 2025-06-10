@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.lebaillyapp.sonicjammer.audio.AudioPlayer
 import com.lebaillyapp.sonicjammer.data.repository.JamAudioRepository
 import com.lebaillyapp.sonicjammer.model.JamConfig
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ### JamViewModel
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
  * @property repository Le repository fournissant le flux audio modélisé.
  * @property audioPlayer Le lecteur audio jouant le flux audio.
  */
-class JamViewModel(
+@HiltViewModel
+class JamViewModel @Inject constructor(
     private val repository: JamAudioRepository,
     private val audioPlayer: AudioPlayer
 ) : ViewModel() {
