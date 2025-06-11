@@ -67,10 +67,15 @@ class AudioPlayer(
                 // Log erreur ou gérer selon besoin (ex: notifier UI)
                 e.printStackTrace()
             } finally {
-                _isPlaying.value = false
-                audioTrack?.stop()
-                audioTrack?.release()
-                audioTrack = null
+                try {
+                    _isPlaying.value = false
+                    audioTrack?.stop()
+                    audioTrack?.release()
+                    audioTrack = null
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+
             }
         }
     }
