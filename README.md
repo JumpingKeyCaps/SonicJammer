@@ -117,9 +117,9 @@ The generated signal is designed to interfere with microphone processing algorit
 
 ## 📸 Screenshots
 
-| Raw decoy | Spectrogram impact |
-|:---:|:---:|
-| ![RAW](screenshots/demoUi.gif) | ![SPEC](screenshots/demoSpec.gif) |
+| Raw decoy | RAW impact | SCO impact |
+|:---:|:---:|:---:|
+| ![RAW](screenshots/demoUi.gif) | ![SPEC](screenshots/demoSpec.gif) | ![SCO](screenshots/demoSco.gif) |
 ---
 
 # Special case of SCO mic (Synchronous Connection-Oriented with heavy filter and frequency limit (8khz max))
