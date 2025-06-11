@@ -22,7 +22,7 @@ data class JamConfig(
     val freqDev: Double = 500.0,
     val modFreq: Double = 5.0, // try  6-8hz (more human voice range)
     val modDepth: Double = 0.6,
-    val clipFactor: Double = 1.2,
+    val clipFactor: Double = 1.0,
     val burstProbability: Float = 0.3f,
     val chaosFreq1: Double = 130.0,
     val chaosDepth: Double = 150.0,
