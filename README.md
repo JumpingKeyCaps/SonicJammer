@@ -112,7 +112,16 @@ The generated signal is designed to interfere with microphone processing algorit
 
 **Result**: Poor-quality, distorted, or even unintelligible voice recordings.
 
+
 ---
+
+## 📸 Screenshots
+
+| Raw decoy | Spectrogram impact |
+|:---:|:---:|
+| ![RAW](screenshots/demoUi.gif) | ![SPEC](screenshots/demoSpec.gif) |
+---
+
 # Special case of SCO mic (Synchronous Connection-Oriented with heavy filter and frequency limit (8khz max))
 
 Most Bluetooth microphones (e.g., AirPods, wireless earbuds) operate using the **SCO profile**, which heavily filters the signal and **limits bandwidth to ~8 kHz**. This makes standard ultrasonic jamming **ineffective**.
