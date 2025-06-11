@@ -54,14 +54,15 @@ fun JammerUIScreen(
     var isVisible by remember { mutableStateOf(true) }
 
     //todo UI TEST ONLY - to replace by jamconfig from viewmodel
-    var ampModFrequencyValue by remember { mutableStateOf(5.0) }
-    var ampModDepthValue by remember { mutableStateOf(6.0) }// real val is divised by 10 (0.6)
-    var chaosFrequencyValue by remember { mutableStateOf(130.0) }
-    var chaosDepthValue by remember { mutableStateOf(150.0) }
-    var burstProbabilityValue by remember { mutableStateOf(3f) }// real val is divised by 10 (0.3)
-    var clipFactorValue by remember { mutableStateOf(12f) }// real val is divised by 10 (1.2)
-    var minFreqValue by remember { mutableStateOf(17500.0) }
+    var ampModFrequencyValue by remember { mutableStateOf(2.0) }
+    var ampModDepthValue by remember { mutableStateOf(0.0) }// real val is divised by 10 (0.6)
+    var chaosFrequencyValue by remember { mutableStateOf(0.0) }
+    var chaosDepthValue by remember { mutableStateOf(0.0) }
+    var burstProbabilityValue by remember { mutableStateOf(0f) }// real val is divised by 10 (0.3)
+    var clipFactorValue by remember { mutableStateOf(0) }// real val is divised by 10 (1.2)
     var maxFreqValue by remember { mutableStateOf(18500.0) }
+    var minFreqValue by remember { mutableStateOf(17500.0) }
+
     var freqDevValue by remember { mutableStateOf(500.0) }
 
 
