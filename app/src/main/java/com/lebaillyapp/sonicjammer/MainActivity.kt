@@ -44,8 +44,8 @@ class MainActivity : ComponentActivity() {
                         .padding(WindowInsets.systemBars.asPaddingValues()), // <-- évite l'overlap
                     contentAlignment = Alignment.TopCenter
                 ) {
-                    JammerUIButtonPreview() // version debug
-                    // JammerUIScreen() // version finale
+                  //  JammerUIButtonPreview() // version debug
+                     JammerUIScreen() // version finale
                 }
             }
         }
